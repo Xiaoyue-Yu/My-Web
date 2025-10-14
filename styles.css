@@ -705,13 +705,13 @@ section {
     align-items: center;
 }
 
-/* 四川大学布局 - 图片在文字上方，与edu2保持一致 */
+
 .edu1-layout {
     flex-direction: column;
     align-items: center;
 }
 
-/* 匹兹堡大学布局 - 图片在专业文字上方 */
+
 .edu2-layout .timeline-text {
     display: flex;
     flex-direction: column;
@@ -725,7 +725,6 @@ section {
     text-align: left;
 }
 
-/* 不再需要特殊调整奇数项的edu1布局 */
 
 .timeline-content-with-image .timeline-text {
     width: 100%;
@@ -740,7 +739,7 @@ section {
     margin-top: 1rem;
 }
 
-/* 四川大学图片 - 放大并放在文字上方 */
+
 .edu1-image {
     max-width: 200px;
     order: -1;
@@ -748,7 +747,6 @@ section {
     margin-top: 0;
 }
 
-/* 匹兹堡大学图片 - 放大并放在文字上方 */
 .edu2-image {
     max-width: 200px;
     order: -1;
@@ -782,59 +780,42 @@ section {
     gap: 2rem;
 }
 
-.project-card {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    height: 320px;
-}
-
 .project-card-link {
-    text-decoration: none; 
-    color: inherit;
+  display: block;
+  height: 100%;
+  color: inherit;          
 }
 
-.project-card:hover {
-    transform: translateY(-10px);
+.project-card {
+  display: grid;
+  grid-template-rows: auto 1fr;  
+  height: 100%;
 }
 
-.coming-soon {
-    position: relative;
-    pointer-events: none;
-}
-.coming-soon .project-img {
-    height: 100%;
-}
-.coming-soon::after {
-    content: "Coming Soon";
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    opacity: 1;
-    border-radius: 8px;
-}
-
+/* Avoid inline-image baseline gap */
 .project-img {
-    width: 100%;
-    height: 66%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  
+  display: block;      
 }
+
+.project-img-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
 
 .project-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    height: 34%;
-    text-align: center;
+  background-color: #f8f8f8;
+  padding: 1rem;
+  display: flex;          
+  flex-direction: column;  
+  align-items: center;     
+  text-align: center;
 }
+
 
 .project-title {
     font-size: 1.5rem;

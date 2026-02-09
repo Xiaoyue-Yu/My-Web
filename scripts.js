@@ -34,21 +34,21 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             if (backToTopBtn) backToTopBtn.style.display = 'none';
         }
-        
+
         // Fade-in animations
         const fadeElements = document.querySelectorAll('.fade-in-section');
         fadeElements.forEach(element => {
             const elementTop = element.getBoundingClientRect().top;
             const elementBottom = element.getBoundingClientRect().bottom;
             const isVisible = (elementTop < window.innerHeight * 0.8) && (elementBottom > 0);
-            
+
             if (isVisible) {
                 if (!element.classList.contains('is-visible')) {
                     element.classList.add('is-visible');
                 }
             }
         });
-        
+
         // Active navigation link
         let current = '';
         sections.forEach(section => {
@@ -65,14 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     // Typewriter effect variables
     let typewriterRAFId = null;
     let restartDebounceTimer = null;
-    
+
     // Debounce function for typewriter restart
     function debounce(func, wait) {
-        return function() {
+        return function () {
             const context = this;
             const args = arguments;
             clearTimeout(restartDebounceTimer);
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, wait);
         };
     }
-    
+
     // Restart typewriter effect
     const restartTypewriter = debounce(() => {
         if (!typewriterRAFId) {
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }, 150);
-    
+
     // Mobile device detection
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     let isTouching = false;
@@ -104,11 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
             touchStartY = e.touches[0].clientY;
         });
     }
-    
+
     // Window load event
     window.addEventListener('load', () => {
         handleScrollEffects();
-        
+
         setTimeout(() => {
             if (typewriterRAFId) {
                 cancelAnimationFrame(typewriterRAFId);
@@ -116,12 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             restartTypewriter();
         }, 500);
-        
+
         setTimeout(() => {
             handleScrollEffects();
         }, 100);
     });
-    
+
     // Visibility change event
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             restartTypewriter();
         }
     });
-    
+
     // Window resize event
     window.addEventListener('resize', debounce(() => {
         if (typewriterRAFId) {
@@ -163,19 +163,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const texts = [
-            "SCUPIAN, IE person.",
-            "Coming to Pitt for INFSCI.",
+            "From SCUPI to Pitt.",
+            "Industrial Engineering and Information Science.",
             "A cat lover.",
             "Also a dog lover.",
-            "My spirit animal is a Beagle.",
             "My actual pet is still loading..."
         ];
-        
+
         let textIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
         let nextUpdateTime = 0;
-        
+
         const typingSpeed = 100;
         const deletingSpeed = 50;
         const pauseDuration = 2000;
@@ -185,12 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 typewriterRAFId = null; // Clear RAF ID if element is gone
                 return;
             }
-            
+
             if (timestamp < nextUpdateTime) {
                 typewriterRAFId = requestAnimationFrame(animate);
                 return;
             }
-            
+
             const currentText = texts[textIndex];
             let timeoutSpeed = typingSpeed;
 
@@ -217,43 +216,43 @@ document.addEventListener('DOMContentLoaded', () => {
             nextUpdateTime = timestamp + timeoutSpeed;
             typewriterRAFId = requestAnimationFrame(animate);
         }
-        
+
         typewriterRAFId = requestAnimationFrame(animate);
     }
 
     // Snowflake effect for contact section
-    (function() {
-        document.addEventListener('DOMContentLoaded', function() {
+    (function () {
+        document.addEventListener('DOMContentLoaded', function () {
             const container = document.querySelector('.contact-image-container');
             if (!container) {
                 return;
             }
-            
+
             let intervalId = null;
             let mouseX = null;
             let mouseY = null;
-            
+
             const snowflakeChars = ['❄', '❅', '❆', '✻', '✼', '❉', '❊', '✧', '✦'];
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             function createMouseSnowflake() {
                 if (mouseX === null || mouseY === null) return;
                 const snow = document.createElement('span');
-                
-                const sizeClass = Math.random() < 0.3 ? 'small' : 
-                                Math.random() < 0.7 ? 'medium' : 'large';
+
+                const sizeClass = Math.random() < 0.3 ? 'small' :
+                    Math.random() < 0.7 ? 'medium' : 'large';
                 snow.className = `snowflake ${sizeClass}`;
-                
+
                 snow.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
-                
+
                 const rect = container.getBoundingClientRect();
                 snow.style.left = (mouseX - rect.left) + 'px';
-                snow.style.top  = (mouseY - rect.top)  + 'px';
-                
+                snow.style.top = (mouseY - rect.top) + 'px';
+
                 container.appendChild(snow);
                 setTimeout(() => snow.remove(), 7000);
             }
-            
+
             if (isMobile) {
                 container.addEventListener('touchstart', (e) => {
                     mouseX = e.touches[0].clientX;
@@ -265,12 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     mouseX = e.clientX;
                     mouseY = e.clientY;
                 });
-                
+
                 container.addEventListener('mouseenter', () => {
                     if (intervalId) return;
                     intervalId = setInterval(createMouseSnowflake, 400);
                 });
-                
+
                 container.addEventListener('mouseleave', () => {
                     clearInterval(intervalId);
                     intervalId = null;
@@ -280,6 +279,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
-    // Initialize typewriter effect
-    typewriterCycle();
 });

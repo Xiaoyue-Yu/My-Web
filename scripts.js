@@ -280,4 +280,140 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
+    // World Map Logic (SVG-based via amCharts 5)
+    function initWorldMap() {
+        const wrapper = document.getElementById('world-map-wrapper');
+        const tooltip = document.getElementById('map-tooltip');
+        if (!wrapper || !tooltip || typeof am5 === 'undefined') return;
+
+        // Visited countries and regions config
+        const visitedConfig = {
+            CN: {
+                description: "Hunan, Sichuan, Zhejiang, Shanghai, Yunnan",
+                geoFile: "chinaLow",
+                regions: {
+                    "CN-HN": { name: "Hunan", description: "Changsha" },
+                    "CN-SC": { name: "Sichuan", description: "Chengdu" },
+                    "CN-ZJ": { name: "Zhejiang", description: "Ningbo" },
+                    "CN-SH": { name: "Shanghai", description: "Shanghai" },
+                    "CN-YN": { name: "Yunnan", description: "Kunming, Lijiang, Dali" }
+                }
+            },
+            JP: { 
+                description: "Kyoto, Hokkaido",
+                geoFile: "japanLow",
+                regions: {
+                    "JP-26": { name: "Kyoto"},
+                    "JP-01": { name: "Hokkaido"},
+                }
+            },
+            US: { 
+                description: "Pittsburgh, San Francisco, Los Angeles, New York, New Brunswick, Philadelphia, Washington DC",
+                geoFile: "usaLow",
+                regions: {
+                    "US-PA": { name: "Pennsylvania", description: "Pittsburgh" },
+                    "US-CA": { name: "California", description: "San Francisco" },
+                    "US-CA": { name: "California", description: "Los Angeles" },
+                    "US-NY": { name: "New York", description: "New York City" },
+                    "US-NJ": { name: "New Jersey", description: "New Brunswick" },
+                    "US-PA": { name: "Pennsylvania", description: "Philadelphia" },
+                    "US-DC": { name: "Washington DC", description: "Washington DC" }
+                }
+            }
+        };
+
+        const root = am5.Root.new("world-map-wrapper");
+        root.setThemes([am5themes_Animated.new(root)]);
+        
+        // Hide amCharts logo
+        if (root._logo) {
+            root._logo.set("forceHidden", true);
+        }
+
+        const chart = root.container.children.push(am5map.MapChart.new(root, {
+            panX: "none",
+            panY: "none",
+            projection: am5map.geoMercator(),
+            maxZoomLevel: 1,
+            minZoomLevel: 1,
+            wheelSensitivity: 0,
+            paddingBottom: 20,
+            paddingTop: 20,
+            paddingLeft: 20,
+            paddingRight: 20,
+            homeGeoPoint: { longitude: 0, latitude: 20 },
+            homeZoomLevel: 1
+        }));
+
+        // Main World Series
+        const worldSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+            geoJSON: am5geodata_worldLow,
+            exclude: ["AQ"]
+        }));
+
+        worldSeries.mapPolygons.template.setAll({
+            interactive: true,
+            fill: am5.color(0xe0e0e0),
+            stroke: am5.color(0xffffff),
+            strokeWidth: 0.5
+        });
+
+        worldSeries.mapPolygons.template.states.create("hover", {
+            fill: am5.color(0xd0d0d0)
+        });
+
+        // Highlight visited countries
+        worldSeries.mapPolygons.template.adapters.add("fill", function(fill, target) {
+            if (target.dataItem && target.dataItem.dataContext) {
+                if (visitedConfig[target.dataItem.dataContext.id]) {
+                    return am5.color(0xB0E0E6);
+                }
+            }
+            return fill;
+        });
+
+        // Tooltip Logic (Silky UI)
+        function showTooltip(ev, title, description) {
+            let content = `<span class="tooltip-title">${title}</span>`;
+            if (description) {
+                content += `<span class="tooltip-cities">${description}</span>`;
+            }
+            content += `<div class="tooltip-arrow"></div>`;
+            
+            tooltip.innerHTML = content;
+            tooltip.classList.add('visible');
+            updateTooltipPosition(ev);
+        }
+
+        function hideTooltip() {
+            tooltip.classList.remove('visible');
+        }
+
+        function updateTooltipPosition(ev) {
+            if (tooltip.classList.contains('visible')) {
+                // Position is updated here, centering and pop-up animation handled by CSS
+                tooltip.style.left = `${ev.point.x}px`;
+                tooltip.style.top = `${ev.point.y}px`;
+            }
+        }
+
+        chart.events.on("globalpointermove", updateTooltipPosition);
+
+        // Events for World Series
+        worldSeries.mapPolygons.template.events.on("pointerover", function(ev) {
+            const id = ev.target.dataItem.dataContext.id;
+            // Only show description in world view, skip country name
+            if (visitedConfig[id]) {
+                showTooltip(ev, visitedConfig[id].description, null);
+            }
+        });
+
+        worldSeries.mapPolygons.template.events.on("pointerout", hideTooltip);
+
+        chart.appear(1000, 100);
+        wrapper.style.height = "500px";
+    }
+
+    initWorldMap();
+
 });

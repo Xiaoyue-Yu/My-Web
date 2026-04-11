@@ -9,6 +9,15 @@
     <link rel="apple-touch-icon" href="images/profile/photo_me.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <!-- amCharts 5 Core -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <!-- amCharts 5 Geodata (Pre-loaded for stability) -->
+    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/chinaLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/japanLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
 </head>
 
 <body>
@@ -67,7 +76,7 @@
                         </div>
                     </div>
                     <div class="home-right">
-                        <h1 class="name">Xiaoyue Yu</h1>
+                        <h1 class="name">Xiaoyue (Helen) Yu</h1>
                         <p class="research-area">My areas of interest are...</p>
                         <div class="bubbles-container">
                             <div class="bubble">Serious Games</div>
@@ -315,6 +324,13 @@
                         style="display: inline-block; padding: 0.3rem 0.8rem; background-color: #B0E0E6; color: #333333; border-radius: 4px; font-size: 0.9rem; font-weight: 500; transition: background-color 0.3s;">
                         View More Blogs
                     </a>
+                </div>
+
+                <!-- World Map Section (Traveled Places) -->
+                <div class="world-map-container fade-in-section">
+                    <div id="world-map-wrapper">
+                        <div class="map-tooltip" id="map-tooltip"></div>
+                    </div>
                 </div>
             </div>
         </section>

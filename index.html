@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <!-- amCharts 5 Core -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/index.js" defer></script>
+    <script src="https://cdn.amcharts.com/lib/5/map.js" defer></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js" defer></script>
     <!-- amCharts 5 Geodata (Pre-loaded for stability) -->
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/chinaLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/japanLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js" defer></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/chinaLow.js" defer></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/japanLow.js" defer></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js" defer></script>
 </head>
 
 <body>
@@ -61,7 +61,7 @@
                         <div class="avatar-container">
                             <img src="images/profile/photo_me.jpg" alt="Xiaoyue Yu" class="avatar">
                         </div>
-                        <div class="social-links" style="justify-content: center; margin-top: 1.5rem;">
+                        <div class="social-links home-social-links">
                             <a href="mailto:XIY249@pitt.edu" title="Email"><i class="fas fa-envelope"></i></a>
                             <a href="resume.html" title="Resume" target="_blank" rel="noopener noreferrer"><i
                                     class="fas fa-file-pdf"></i></a>
@@ -77,12 +77,32 @@
                     </div>
                     <div class="home-right">
                         <h1 class="name">Xiaoyue (Helen) Yu</h1>
-                        <p class="research-area">My areas of interest are...</p>
+                        <p class="research-area">My research interests span...</p>
                         <div class="bubbles-container">
-                            <div class="bubble">Serious Games</div>
-                            <div class="bubble">Human Factor</div>
-                            <div class="bubble">Human-centered Design</div>
-                            <div class="bubble">Human-AI Interaction</div>
+                            <div class="bubble methodology-bubble">
+                                <span class="bubble-category">Methodology</span>
+                                <span class="bubble-term">Human-Centered Design</span>
+                            </div>
+                            <div class="bubble methodology-bubble">
+                                <span class="bubble-category">Methodology</span>
+                                <span class="bubble-term">Cognitive Science &amp; Learning</span>
+                            </div>
+                            <div class="bubble technology-bubble">
+                                <span class="bubble-category">Technology</span>
+                                <span class="bubble-term">Human-AI Collaboration</span>
+                            </div>
+                            <div class="bubble technology-bubble">
+                                <span class="bubble-category">Technology</span>
+                                <span class="bubble-term">Serious Games</span>
+                            </div>
+                            <div class="bubble vision-bubble">
+                                <span class="bubble-category">Vision</span>
+                                <span class="bubble-term">Tech for Good</span>
+                            </div>
+                            <div class="bubble vision-bubble">
+                                <span class="bubble-category">Vision</span>
+                                <span class="bubble-term">Digital Heritage</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -291,7 +311,7 @@
             <div class="container">
                 <h2 class="section-title">Blog</h2>
                 <div class="projects-grid fade-in-section">
-                    <a href="blog-mount-qingcheng.html" class="project-card-link">
+                    <a href="blog/blog-mount-qingcheng.html" class="project-card-link">
                         <div class="project-card">
                             <img src="images/blog/MountQingcheng_title.JPG" alt="Mount Qingcheng" class="project-img">
                             <div class="project-info">
@@ -300,7 +320,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="blog-japan.html" class="project-card-link">
+                    <a href="blog/blog-japan.html" class="project-card-link">
                         <div class="project-card">
                             <img src="images/blog/Japan_title.JPG" alt="Japan" class="project-img">
                             <div class="project-info">
@@ -309,7 +329,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="blog-east-coast-usa.html" class="project-card-link">
+                    <a href="blog/blog-east-coast-usa.html" class="project-card-link">
                         <div class="project-card">
                             <img src="images/blog/EastCostUSA_title.JPG" alt="East Coast USA" class="project-img">
                             <div class="project-info">
@@ -319,9 +339,8 @@
                         </div>
                     </a>
                 </div>
-                <div class="view-more-container" style="text-align: center; margin-top: 2rem;">
-                    <a href="blogs.html" class="view-more-btn"
-                        style="display: inline-block; padding: 0.3rem 0.8rem; background-color: #B0E0E6; color: #333333; border-radius: 4px; font-size: 0.9rem; font-weight: 500; transition: background-color 0.3s;">
+                <div class="view-more-container">
+                    <a href="blog/index.html" class="view-more-btn">
                         View More Blogs
                     </a>
                 </div>
@@ -342,9 +361,6 @@
                 <div class="contact-content-overlay">
                     <h2 class="section-title contact-title">Contact</h2>
                     <div class="contact-content fade-in-section">
-                        <!-- <p class="contact-text">
-
-                        </p> -->
                         <p class="contact-email">XIY249@pitt.edu</p>
                         <p class="contact-email">yuxiaoyue@stu.scu.edu.cn</p>
                     </div>
@@ -356,11 +372,9 @@
 
     <button class="back-to-top" id="backToTop" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
 
-    <div
-        style="position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 12px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); z-index: 1001;">
-        &copy; 2026 Xiaoyue Yu. All Rights Reserved.</div>
+    <footer class="site-footer">&copy; 2026 Xiaoyue Yu. All Rights Reserved.</footer>
 
-    <script src="scripts.js"></script>
+    <script src="scripts.js" defer></script>
 </body>
 
 </html>

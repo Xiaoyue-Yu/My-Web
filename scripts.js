@@ -3,160 +3,85 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-links a');
     const hamburger = document.querySelector('.hamburger');
     const navLinksContainer = document.querySelector('.nav-links');
-    const sections = document.querySelectorAll('section');
+    const sections = document.querySelectorAll('section[id]');
+    const fadeElements = document.querySelectorAll('.fade-in-section');
     const backToTopBtn = document.getElementById('backToTop');
+    const typewriterElement = document.getElementById('typewriter');
 
-    // Mobile menu toggle
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navLinksContainer.classList.toggle('active');
-    });
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navLinksContainer.classList.remove('active');
-        });
-    });
-
-    // Scroll effects handler
-    function handleScrollEffects() {
-        // Navbar shadow effect
-        if (window.scrollY > 50) {
-            navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        } else {
-            navbar.style.boxShadow = 'none';
-        }
-
-        // Back to top button visibility
-        if (window.scrollY > 300) {
-            if (backToTopBtn) backToTopBtn.style.display = 'flex';
-        } else {
-            if (backToTopBtn) backToTopBtn.style.display = 'none';
-        }
-
-        // Fade-in animations
-        const fadeElements = document.querySelectorAll('.fade-in-section');
-        fadeElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const elementBottom = element.getBoundingClientRect().bottom;
-            const isVisible = (elementTop < window.innerHeight * 0.8) && (elementBottom > 0);
-
-            if (isVisible) {
-                if (!element.classList.contains('is-visible')) {
-                    element.classList.add('is-visible');
-                }
-            }
-        });
-
-        // Active navigation link
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            if (window.scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
-            if (href && href.startsWith('#') && href.substring(1) === current) {
-                link.classList.add('active');
-            }
-        });
-    }
-
-    // Typewriter effect variables
     let typewriterRAFId = null;
     let restartDebounceTimer = null;
 
-    // Debounce function for typewriter restart
     function debounce(func, wait) {
-        return function () {
-            const context = this;
-            const args = arguments;
+        return function (...args) {
             clearTimeout(restartDebounceTimer);
-            restartDebounceTimer = setTimeout(() => {
-                func.apply(context, args);
-            }, wait);
+            restartDebounceTimer = setTimeout(() => func.apply(this, args), wait);
         };
     }
 
-    // Restart typewriter effect
-    const restartTypewriter = debounce(() => {
-        if (!typewriterRAFId) {
-            const typewriterElement = document.getElementById('typewriter');
-            if (typewriterElement) {
-                typewriterElement.textContent = '';
-                typewriterCycle();
-            }
-        }
-    }, 150);
-
-    // Mobile device detection
-    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    let isTouching = false;
-    let touchStartY = 0;
-
-    // Mobile touch events
-    if (isMobileDevice) {
-        window.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
+    if (hamburger && navLinksContainer) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinksContainer.classList.toggle('active');
         });
     }
 
-    // Window load event
-    window.addEventListener('load', () => {
-        handleScrollEffects();
-
-        setTimeout(() => {
-            if (typewriterRAFId) {
-                cancelAnimationFrame(typewriterRAFId);
-                typewriterRAFId = null;
+    navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            if (hamburger) {
+                hamburger.classList.remove('active');
             }
-            restartTypewriter();
-        }, 500);
 
-        setTimeout(() => {
-            handleScrollEffects();
-        }, 100);
+            if (navLinksContainer) {
+                navLinksContainer.classList.remove('active');
+            }
+        });
     });
 
-    // Visibility change event
-    document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-            if (typewriterRAFId) {
-                cancelAnimationFrame(typewriterRAFId);
-                typewriterRAFId = null;
+    function handleScrollEffects() {
+        if (navbar) {
+            navbar.style.boxShadow = window.scrollY > 50
+                ? '0 2px 10px rgba(0, 0, 0, 0.1)'
+                : 'none';
+        }
+
+        if (backToTopBtn) {
+            backToTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        }
+
+        fadeElements.forEach((element) => {
+            const rect = element.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
+
+            if (isVisible) {
+                element.classList.add('is-visible');
             }
-            restartTypewriter();
-        }
-    });
+        });
 
-    // Window resize event
-    window.addEventListener('resize', debounce(() => {
-        if (typewriterRAFId) {
-            cancelAnimationFrame(typewriterRAFId);
-            typewriterRAFId = null;
+        if (!sections.length || !navLinks.length) {
+            return;
         }
-        restartTypewriter();
-    }, 250));
 
-    // Back to top button click event
-    if (backToTopBtn) {
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        let currentSectionId = '';
+        sections.forEach((section) => {
+            if (window.scrollY >= section.offsetTop - 200) {
+                currentSectionId = section.id;
+            }
+        });
+
+        navLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+            const isHashLink = href && href.startsWith('#');
+            link.classList.toggle(
+                'active',
+                Boolean(isHashLink && href.substring(1) === currentSectionId)
+            );
         });
     }
 
-    // Scroll event listener
-    window.addEventListener('scroll', handleScrollEffects);
-
-    // Typewriter effect function
     function typewriterCycle() {
-        const typewriterElement = document.getElementById('typewriter');
-        if (!typewriterElement) return;
+        if (!typewriterElement) {
+            return;
+        }
 
         if (typewriterRAFId) {
             cancelAnimationFrame(typewriterRAFId);
@@ -164,11 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const texts = [
-            "From SCUPI to Pitt.",
-            "Industrial Engineering and Information Science.",
-            "A cat lover.",
-            "Also a dog lover.",
-            "My actual pet is still loading..."
+            'From SCUPI to Pitt.',
+            'Information Science and Industrial Engineering.',
+            'Passionate about AI development.',
+            'A cat lover... Also a dog lover.',
+            'A foster volunteer for HARP at Pittsburgh!'
         ];
 
         let textIndex = 0;
@@ -181,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const pauseDuration = 2000;
 
         function animate(timestamp) {
-            if (!document.getElementById('typewriter')) {
-                typewriterRAFId = null; // Clear RAF ID if element is gone
+            if (!typewriterElement) {
+                typewriterRAFId = null;
                 return;
             }
 
@@ -192,147 +117,184 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const currentText = texts[textIndex];
-            let timeoutSpeed = typingSpeed;
+            let delay = typingSpeed;
 
             if (isDeleting) {
                 typewriterElement.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-                timeoutSpeed = deletingSpeed;
+                charIndex -= 1;
+                delay = deletingSpeed;
 
                 if (charIndex === 0) {
                     isDeleting = false;
                     textIndex = (textIndex + 1) % texts.length;
-                    timeoutSpeed = 500;
+                    delay = 500;
                 }
             } else {
                 typewriterElement.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
+                charIndex += 1;
 
                 if (charIndex === currentText.length) {
                     isDeleting = true;
-                    timeoutSpeed = pauseDuration;
+                    delay = pauseDuration;
                 }
             }
 
-            nextUpdateTime = timestamp + timeoutSpeed;
+            nextUpdateTime = timestamp + delay;
             typewriterRAFId = requestAnimationFrame(animate);
         }
 
         typewriterRAFId = requestAnimationFrame(animate);
     }
 
-    // Snowflake effect for contact section
-    (function () {
-        document.addEventListener('DOMContentLoaded', function () {
-            const container = document.querySelector('.contact-image-container');
-            if (!container) {
+    const restartTypewriter = debounce(() => {
+        if (typewriterElement && !typewriterRAFId) {
+            typewriterElement.textContent = '';
+            typewriterCycle();
+        }
+    }, 150);
+
+    if (typewriterElement) {
+        window.addEventListener('load', () => {
+            handleScrollEffects();
+
+            setTimeout(() => {
+                if (typewriterRAFId) {
+                    cancelAnimationFrame(typewriterRAFId);
+                    typewriterRAFId = null;
+                }
+                restartTypewriter();
+            }, 500);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                if (typewriterRAFId) {
+                    cancelAnimationFrame(typewriterRAFId);
+                    typewriterRAFId = null;
+                }
+                restartTypewriter();
+            }
+        });
+
+        window.addEventListener('resize', debounce(() => {
+            if (typewriterRAFId) {
+                cancelAnimationFrame(typewriterRAFId);
+                typewriterRAFId = null;
+            }
+            restartTypewriter();
+        }, 250));
+    }
+
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    function setupSnowflakeEffect() {
+        const container = document.querySelector('.contact-image-container');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!container || prefersReducedMotion) {
+            return;
+        }
+
+        const snowflakeChars = ['\u2744', '\u2745', '\u2746', '\u273B', '\u273C', '\u2749', '\u274A'];
+        const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const maxSnowflakes = 18;
+
+        let intervalId = null;
+        let pointerX = null;
+        let pointerY = null;
+
+        function createSnowflake() {
+            if (pointerX === null || pointerY === null) {
                 return;
             }
 
-            let intervalId = null;
-            let mouseX = null;
-            let mouseY = null;
-
-            const snowflakeChars = ['❄', '❅', '❆', '✻', '✼', '❉', '❊', '✧', '✦'];
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-            function createMouseSnowflake() {
-                if (mouseX === null || mouseY === null) return;
-                const snow = document.createElement('span');
-
-                const sizeClass = Math.random() < 0.3 ? 'small' :
-                    Math.random() < 0.7 ? 'medium' : 'large';
-                snow.className = `snowflake ${sizeClass}`;
-
-                snow.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
-
-                const rect = container.getBoundingClientRect();
-                snow.style.left = (mouseX - rect.left) + 'px';
-                snow.style.top = (mouseY - rect.top) + 'px';
-
-                container.appendChild(snow);
-                setTimeout(() => snow.remove(), 7000);
+            if (container.querySelectorAll('.snowflake').length >= maxSnowflakes) {
+                return;
             }
 
-            if (isMobile) {
-                container.addEventListener('touchstart', (e) => {
-                    mouseX = e.touches[0].clientX;
-                    mouseY = e.touches[0].clientY;
-                    createMouseSnowflake();
-                });
-            } else {
-                container.addEventListener('mousemove', (e) => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                });
+            const rect = container.getBoundingClientRect();
+            const snowflake = document.createElement('span');
+            const size = 10 + Math.random() * 18;
+            const duration = 4.5 + Math.random() * 2.5;
+            const drift = -40 + Math.random() * 80;
+            const fallDistance = Math.min(container.clientHeight || window.innerHeight, window.innerHeight) + 120;
 
-                container.addEventListener('mouseenter', () => {
-                    if (intervalId) return;
-                    intervalId = setInterval(createMouseSnowflake, 400);
-                });
+            snowflake.className = 'snowflake';
+            snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+            snowflake.style.left = `${pointerX - rect.left}px`;
+            snowflake.style.top = `${pointerY - rect.top}px`;
+            snowflake.style.fontSize = `${size}px`;
+            snowflake.style.setProperty('--snow-duration', `${duration}s`);
+            snowflake.style.setProperty('--snow-drift', `${drift}px`);
+            snowflake.style.setProperty('--snow-fall-distance', `${fallDistance}px`);
 
-                container.addEventListener('mouseleave', () => {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                    mouseX = mouseY = null;
-                });
+            container.appendChild(snowflake);
+            window.setTimeout(() => snowflake.remove(), duration * 1000 + 400);
+        }
+
+        if (isCoarsePointer) {
+            container.addEventListener('touchstart', (event) => {
+                const touch = event.touches[0];
+                pointerX = touch.clientX;
+                pointerY = touch.clientY;
+                createSnowflake();
+            }, { passive: true });
+            return;
+        }
+
+        container.addEventListener('pointermove', (event) => {
+            pointerX = event.clientX;
+            pointerY = event.clientY;
+        });
+
+        container.addEventListener('pointerenter', (event) => {
+            pointerX = event.clientX;
+            pointerY = event.clientY;
+
+            if (!intervalId) {
+                intervalId = window.setInterval(createSnowflake, 280);
             }
         });
-    })();
 
-    // World Map Logic (SVG-based via amCharts 5)
+        container.addEventListener('pointerleave', () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+
+            pointerX = null;
+            pointerY = null;
+        });
+    }
+
     function initWorldMap() {
         const wrapper = document.getElementById('world-map-wrapper');
         const tooltip = document.getElementById('map-tooltip');
-        if (!wrapper || !tooltip || typeof am5 === 'undefined') return;
 
-        // Visited countries and regions config
-        const visitedConfig = {
-            CN: {
-                description: "Hunan, Sichuan, Zhejiang, Shanghai, Yunnan",
-                geoFile: "chinaLow",
-                regions: {
-                    "CN-HN": { name: "Hunan", description: "Changsha" },
-                    "CN-SC": { name: "Sichuan", description: "Chengdu" },
-                    "CN-ZJ": { name: "Zhejiang", description: "Ningbo" },
-                    "CN-SH": { name: "Shanghai", description: "Shanghai" },
-                    "CN-YN": { name: "Yunnan", description: "Kunming, Lijiang, Dali" }
-                }
-            },
-            JP: { 
-                description: "Kyoto, Hokkaido",
-                geoFile: "japanLow",
-                regions: {
-                    "JP-26": { name: "Kyoto"},
-                    "JP-01": { name: "Hokkaido"},
-                }
-            },
-            US: { 
-                description: "Pittsburgh, San Francisco, Los Angeles, New York, New Brunswick, Philadelphia, Washington DC",
-                geoFile: "usaLow",
-                regions: {
-                    "US-PA": { name: "Pennsylvania", description: "Pittsburgh" },
-                    "US-CA": { name: "California", description: "San Francisco" },
-                    "US-CA": { name: "California", description: "Los Angeles" },
-                    "US-NY": { name: "New York", description: "New York City" },
-                    "US-NJ": { name: "New Jersey", description: "New Brunswick" },
-                    "US-PA": { name: "Pennsylvania", description: "Philadelphia" },
-                    "US-DC": { name: "Washington DC", description: "Washington DC" }
-                }
-            }
+        if (!wrapper || !tooltip || typeof am5 === 'undefined') {
+            return;
+        }
+
+        const visitedCountries = {
+            CN: 'Hunan, Sichuan, Zhejiang, Shanghai, Yunnan',
+            JP: 'Kyoto, Hokkaido',
+            US: 'Pittsburgh, San Francisco, Los Angeles, New York, New Brunswick, Philadelphia, Washington DC'
         };
 
-        const root = am5.Root.new("world-map-wrapper");
+        const root = am5.Root.new('world-map-wrapper');
         root.setThemes([am5themes_Animated.new(root)]);
-        
-        // Hide amCharts logo
+
         if (root._logo) {
-            root._logo.set("forceHidden", true);
+            root._logo.set('forceHidden', true);
         }
 
         const chart = root.container.children.push(am5map.MapChart.new(root, {
-            panX: "none",
-            panY: "none",
+            panX: 'none',
+            panY: 'none',
             projection: am5map.geoMercator(),
             maxZoomLevel: 1,
             minZoomLevel: 1,
@@ -345,10 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
             homeZoomLevel: 1
         }));
 
-        // Main World Series
         const worldSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
             geoJSON: am5geodata_worldLow,
-            exclude: ["AQ"]
+            exclude: ['AQ']
         }));
 
         worldSeries.mapPolygons.template.setAll({
@@ -358,62 +319,49 @@ document.addEventListener('DOMContentLoaded', () => {
             strokeWidth: 0.5
         });
 
-        worldSeries.mapPolygons.template.states.create("hover", {
+        worldSeries.mapPolygons.template.states.create('hover', {
             fill: am5.color(0xd0d0d0)
         });
 
-        // Highlight visited countries
-        worldSeries.mapPolygons.template.adapters.add("fill", function(fill, target) {
-            if (target.dataItem && target.dataItem.dataContext) {
-                if (visitedConfig[target.dataItem.dataContext.id]) {
-                    return am5.color(0xB0E0E6);
-                }
-            }
-            return fill;
+        worldSeries.mapPolygons.template.adapters.add('fill', (fill, target) => {
+            const countryId = target.dataItem?.dataContext?.id;
+            return visitedCountries[countryId] ? am5.color(0xB0E0E6) : fill;
         });
 
-        // Tooltip Logic (Silky UI)
-        function showTooltip(ev, title, description) {
-            let content = `<span class="tooltip-title">${title}</span>`;
-            if (description) {
-                content += `<span class="tooltip-cities">${description}</span>`;
+        function updateTooltipPosition(event) {
+            if (!tooltip.classList.contains('visible') || !event?.point) {
+                return;
             }
-            content += `<div class="tooltip-arrow"></div>`;
-            
-            tooltip.innerHTML = content;
+
+            tooltip.style.left = `${event.point.x}px`;
+            tooltip.style.top = `${event.point.y}px`;
+        }
+
+        function showTooltip(event, content) {
+            tooltip.innerHTML = `<span class="tooltip-title">${content}</span><div class="tooltip-arrow"></div>`;
             tooltip.classList.add('visible');
-            updateTooltipPosition(ev);
+            updateTooltipPosition(event);
         }
 
         function hideTooltip() {
             tooltip.classList.remove('visible');
         }
 
-        function updateTooltipPosition(ev) {
-            if (tooltip.classList.contains('visible')) {
-                // Position is updated here, centering and pop-up animation handled by CSS
-                tooltip.style.left = `${ev.point.x}px`;
-                tooltip.style.top = `${ev.point.y}px`;
-            }
-        }
+        chart.events.on('globalpointermove', updateTooltipPosition);
 
-        chart.events.on("globalpointermove", updateTooltipPosition);
-
-        // Events for World Series
-        worldSeries.mapPolygons.template.events.on("pointerover", function(ev) {
-            const id = ev.target.dataItem.dataContext.id;
-            // Only show description in world view, skip country name
-            if (visitedConfig[id]) {
-                showTooltip(ev, visitedConfig[id].description, null);
+        worldSeries.mapPolygons.template.events.on('pointerover', (event) => {
+            const countryId = event.target.dataItem?.dataContext?.id;
+            if (countryId && visitedCountries[countryId]) {
+                showTooltip(event, visitedCountries[countryId]);
             }
         });
 
-        worldSeries.mapPolygons.template.events.on("pointerout", hideTooltip);
-
+        worldSeries.mapPolygons.template.events.on('pointerout', hideTooltip);
         chart.appear(1000, 100);
-        wrapper.style.height = "500px";
     }
 
+    handleScrollEffects();
+    window.addEventListener('scroll', handleScrollEffects, { passive: true });
+    setupSnowflakeEffect();
     initWorldMap();
-
 });

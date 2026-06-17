@@ -9,19 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriterElement = document.getElementById('typewriter');
 
     let typewriterRAFId = null;
-    let restartDebounceTimer = null;
 
     function debounce(func, wait) {
+        let timer = null;
         return function (...args) {
-            clearTimeout(restartDebounceTimer);
-            restartDebounceTimer = setTimeout(() => func.apply(this, args), wait);
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), wait);
         };
     }
 
     if (hamburger && navLinksContainer) {
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
+            const isOpen = hamburger.classList.toggle('active');
             navLinksContainer.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', isOpen);
         });
     }
 

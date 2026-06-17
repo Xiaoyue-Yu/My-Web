@@ -7,6 +7,9 @@
     <title>Xiaoyue Yu</title>
     <link rel="icon" href="images/profile/photo_me.jpg">
     <link rel="apple-touch-icon" href="images/profile/photo_me.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <!-- amCharts 5 Core -->
@@ -33,11 +36,11 @@
                 <li><a href="resume.html" target="_blank" rel="noopener noreferrer">Resume</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <div class="hamburger">
+            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
                 <div></div>
                 <div></div>
                 <div></div>
-            </div>
+            </button>
         </div>
     </nav>
 
@@ -66,11 +69,11 @@
                             <a href="resume.html" title="Resume" target="_blank" rel="noopener noreferrer"><i
                                     class="fas fa-file-pdf"></i></a>
                             <a href="https://scholar.google.com/citations?hl=en&user=vhUDTcAAAAAJ"
-                                title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+                                title="Google Scholar" target="_blank" rel="noopener noreferrer"><i class="fas fa-graduation-cap"></i></a>
                             <a href="https://github.com/Xiaoyue-Yu" title="GitHub" target="_blank"
                                 rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-                            <a href="https://www.linkedin.com/in/xiaoyue-yu/" title="LinkedIn"><i
-                                    class="fab fa-linkedin"></i></a>
+                            <a href="https://www.linkedin.com/in/xiaoyue-yu/" title="LinkedIn" target="_blank"
+                                rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                             <a href="https://xiaoyue-yu.itch.io/" title="itch.io" target="_blank"
                                 rel="noopener noreferrer"><i class="fab fa-itch-io"></i></a>
                         </div>
@@ -313,7 +316,9 @@
                 <div class="projects-grid fade-in-section">
                     <a href="blog/blog-mount-qingcheng.html" class="project-card-link">
                         <div class="project-card">
-                            <img src="images/blog/MountQingcheng_title.JPG" alt="Mount Qingcheng" class="project-img">
+                            <div class="project-img-container">
+                                <img src="images/blog/MountQingcheng_title.JPG" alt="Mount Qingcheng" class="project-img">
+                            </div>
                             <div class="project-info">
                                 <h3 class="project-title">Mount Qingcheng</h3>
                                 <p class="project-date">May 24, 2025</p>
@@ -322,7 +327,9 @@
                     </a>
                     <a href="blog/blog-japan.html" class="project-card-link">
                         <div class="project-card">
-                            <img src="images/blog/Japan_title.JPG" alt="Japan" class="project-img">
+                            <div class="project-img-container">
+                                <img src="images/blog/Japan_title.JPG" alt="Japan" class="project-img">
+                            </div>
                             <div class="project-info">
                                 <h3 class="project-title">Japan: Kyoto, Hokkaido</h3>
                                 <p class="project-date">January 12, 2025</p>
@@ -331,7 +338,9 @@
                     </a>
                     <a href="blog/blog-east-coast-usa.html" class="project-card-link">
                         <div class="project-card">
-                            <img src="images/blog/EastCostUSA_title.JPG" alt="East Coast USA" class="project-img">
+                            <div class="project-img-container">
+                                <img src="images/blog/EastCostUSA_title.JPG" alt="East Coast USA" class="project-img">
+                            </div>
                             <div class="project-info">
                                 <h3 class="project-title">East Coast USA</h3>
                                 <p class="project-date">July 16, 2024</p>
@@ -361,8 +370,8 @@
                 <div class="contact-content-overlay">
                     <h2 class="section-title contact-title">Contact</h2>
                     <div class="contact-content fade-in-section">
-                        <p class="contact-email">XIY249@pitt.edu</p>
-                        <p class="contact-email">yuxiaoyue@stu.scu.edu.cn</p>
+                        <a href="mailto:XIY249@pitt.edu" class="contact-email">XIY249@pitt.edu</a>
+                        <a href="mailto:yuxiaoyue@stu.scu.edu.cn" class="contact-email">yuxiaoyue@stu.scu.edu.cn</a>
                     </div>
                 </div>
             </div>

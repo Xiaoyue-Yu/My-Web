@@ -1,60 +1,3 @@
-/* Fonts */
-@font-face {
-    font-family: 'Lora';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Lora Regular'), local('Lora-Regular'), local('Times New Roman');
-}
-
-@font-face {
-    font-family: 'Lora';
-    font-style: normal;
-    font-weight: 500;
-    src: local('Lora Medium'), local('Lora-Medium'), local('Times New Roman');
-}
-
-@font-face {
-    font-family: 'Lora';
-    font-style: normal;
-    font-weight: 600;
-    src: local('Lora SemiBold'), local('Lora-SemiBold'), local('Times New Roman Bold');
-}
-
-@font-face {
-    font-family: 'Lora';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Lora Bold'), local('Lora-Bold'), local('Times New Roman Bold');
-}
-
-@font-face {
-    font-family: 'Nunito Sans';
-    font-style: normal;
-    font-weight: 300;
-    src: local('Nunito Sans Light'), local('NunitoSans-Light'), local('Arial');
-}
-
-@font-face {
-    font-family: 'Nunito Sans';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Nunito Sans Regular'), local('NunitoSans-Regular'), local('Arial');
-}
-
-@font-face {
-    font-family: 'Nunito Sans';
-    font-style: normal;
-    font-weight: 600;
-    src: local('Nunito Sans SemiBold'), local('NunitoSans-SemiBold'), local('Arial Bold');
-}
-
-@font-face {
-    font-family: 'Nunito Sans';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Nunito Sans Bold'), local('NunitoSans-Bold'), local('Arial Bold');
-}
-
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -263,6 +206,9 @@ section {
 .hamburger {
     display: none;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .hamburger div {
@@ -1085,7 +1031,7 @@ footer {
 .back-to-top {
     position: fixed;
     right: 2rem;
-    bottom: 2rem;
+    bottom: 2.5rem;
     width: 48px;
     height: 48px;
     border-radius: 50%;
